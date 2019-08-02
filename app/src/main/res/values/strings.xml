@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Screen Puzzle</string>
+    <string name="ready">Готово</string>
+    <string name="start">Создать комнату</string>
+    <string name="serv_time">Серверное время:</string>
+    <string name="time_less">Время меньше серверного!</string>
+    <string name="time_more">Видео запустится через</string>
+    <string name="mls">миллисекунд</string>
+
+    <string name="room">Введите номер комнаты:</string>
+    <string name="roomNum">Номер комнаты:</string>
+    <string name="main">Главный</string>
+    <string name="wall">Видеостена</string>
+</resources>

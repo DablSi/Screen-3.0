@@ -1,0 +1,410 @@
+//Автоматически сгенерированный код PlantUML
+//Automatically generated PlantUML code
+
+@startuml
+
+title __SCREEN's Class Diagram__\n
+
+  package com.example.ducks.screen {
+    class Autorun {
+        + onReceive()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class Camera {
+        - cameraManager : CameraManager
+        - cameraFacing : int
+        - surfaceTextureListener : SurfaceTextureListener
+        - cameraId : String
+        - CAMERA_REQUEST_CODE : int
+        - backgroundHandler : Handler
+        - backgroundThread : HandlerThread
+        - cameraDevice : CameraDevice
+        - stateCallback : StateCallback
+        - textureView : TextureView
+        - cameraCaptureSession : CameraCaptureSession
+        - captureRequestBuilder : Builder
+        - captureRequest : CaptureRequest
+        - mImageReader : ImageReader
+        - bitmap : Bitmap
+        - bitmap2 : Bitmap
+        - previewSize : Size
+        - t : long
+        - rotate : int
+        - xs : int
+        - ys : int
+        - floatingActionButton : FloatingActionButton
+        {static} + _R : int
+        {static} + UNKNOWN : int
+        - hideSystemUI()
+        - chooseOptimalSize()
+        - setUpCamera()
+        - openCamera()
+        - openBackgroundThread()
+        - createPreviewSession()
+        - lock()
+        - unlock()
+        # onCreate()
+        # onStart()
+        # onResume()
+        # onStop()
+        - closeCamera()
+        - closeBackgroundThread()
+        + fab()
+        - fixDarkPreview()
+        ~ bitmapUpload()
+        ~ bitmapDownload()
+        + denoise()
+        + erosion()
+        + dilating()
+        + comparePixel()
+        + testColor()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class PhotoThread {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class SendThread {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class CordThread {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class OrientationListener {
+        ~ ROTATION_O : int
+        ~ ROTATION_90 : int
+        ~ ROTATION_270 : int
+        - rotation : int
+        + OrientationListener()
+        + onOrientationChanged()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class MainActivity {
+        {static} - REQUEST_TAKE_GALLERY_VIDEO : int
+        {static} - REQUEST_START_CAMERA_ACTIVITY : int
+        {static} + video : byte[]
+        {static} + room : int
+        - textView1 : TextView
+        {static} - isUploaded : boolean
+        {static} # android_id : String
+        - button : Button
+        - showFileChooser()
+        + onActivityResult()
+        - getPath()
+        # onCreate()
+        # onResume()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class RoomAsync {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class NewThread {
+        # doInBackground()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class Panel {
+        - textView : TextView
+        - textView1 : TextView
+        - button : ImageButton
+        - button1 : ImageButton
+        + select()
+        + unselect()
+        + onCreateView()
+        + onResume()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class Search {
+        ~ relativeLayout : RelativeLayout
+        ~ isClicked : boolean
+        ~ isTrue : boolean
+        {static} + URL : String
+        - android_id : String
+        - color1 : int
+        - color2 : int
+        {static} + room : Integer
+        - responseBody : Response<ResponseBody>
+        - newFragment : Fragment
+        - timeStart : long
+        - hideSystemUI()
+        # onCreate()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class SendThread {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class GetThread {
+        ~ time : long
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class DownloadThread {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class VideoThread {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    interface Service {
+        {abstract} + putDevice()
+        {abstract} + putCoords()
+        {abstract} + getCoords()
+        {abstract} + getTime()
+        {abstract} + getColor()
+        {abstract} + getRoom()
+        {abstract} + getFile()
+        {abstract} + uploadVideo()
+        {abstract} + getColors()
+        {abstract} + putStartVideo()
+        {abstract} + getStartVideo()
+        {abstract} + getIndexes()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class DeviceData {
+        + color : Integer
+        + room : Integer
+        + DeviceData()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class RoomData {
+        + deviceList : LinkedList<String>
+        + time : Long
+        + video : byte[]
+        + RoomData()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class Coords {
+        + x1 : Integer
+        + y1 : Integer
+        + x2 : Integer
+        + y2 : Integer
+        + Coords()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class Sync {
+        {static} + SYNC : String
+        {static} + isStarted : boolean
+        {static} + deltaT : float
+        ~ D : int
+        {static} + date : String
+        {static} ~ t1 : long
+        {static} ~ t2 : long
+        {static} ~ t3 : long
+        + socket : Socket
+        + Sync()
+        + onCreate()
+        + onStartCommand()
+        + onDestroy()
+        + onBind()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class SyncThread {
+        + SyncThread()
+        # doInBackground()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class Timer {
+        - relativeLayout : RelativeLayout
+        - button : Button
+        - timePicker : TimePicker
+        - textView : TextView
+        {static} ~ isStarted : boolean
+        - time : long
+        # onCreate()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class ChangeText {
+        + ChangeText()
+        + onTick()
+        + onFinish()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class SendTime {
+        + run()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class Video {
+        {static} - TAG : String
+        - mVideoWidth : float
+        - mVideoHeight : float
+        - mDisplayWidth : float
+        - mDisplayHeight : float
+        {static} ~ ax : int
+        {static} ~ ay : int
+        {static} ~ bx : int
+        {static} ~ by : int
+        {static} ~ mMediaPlayer : MediaPlayer
+        - mTextureView : TextureView
+        {static} ~ path : String
+        - wakeLock : WakeLock
+        + onCreate()
+        - hideSystemUI()
+        - showSystemUI()
+        - initView()
+        # onDestroy()
+        - calculateVideoSize()
+        - updateTextureViewSize()
+        + onSurfaceTextureAvailable()
+        # onPause()
+        + onRequestPermissionsResult()
+        + onSurfaceTextureSizeChanged()
+        + onSurfaceTextureDestroyed()
+        + onSurfaceTextureUpdated()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class VideoSurfaceView {
+        ~ i : int
+        ~ x : int
+        ~ y : int
+        ~ width : int
+        ~ height : int
+        + VideoSurfaceView()
+        + surfaceCreated()
+        + surfaceChanged()
+        + surfaceDestroyed()
+    }
+  }
+  
+
+  package com.example.ducks.screen {
+    class DrawThread {
+        - surfaceHolder : SurfaceHolder
+        - running : boolean
+        + DrawThread()
+        + requestStop()
+        + run()
+    }
+  }
+  
+
+  Autorun -up-|> BroadcastReceiver
+  Camera -up-|> AppCompatActivity
+  Camera o-- OrientationListener : orientationListener
+  Camera +-down- PhotoThread
+  Camera +-down- SendThread
+  Camera +-down- CordThread
+  Camera +-down- OrientationListener
+  OrientationListener -up-|> OrientationEventListener
+  HostCallbacks -up-|> FragmentHostCallback
+  MainActivity -up-|> AppCompatActivity
+  MainActivity +-down- RoomAsync
+  MainActivity +-down- NewThread
+  NewThread -up-|> AsyncTask
+  HostCallbacks -up-|> FragmentHostCallback
+  Panel -up-|> Fragment
+  SavedState -up-|> Parcelable
+  Search -up-|> AppCompatActivity
+  Search +-down- SendThread
+  Search +-down- GetThread
+  Search +-down- DownloadThread
+  Search +-down- VideoThread
+  HostCallbacks -up-|> FragmentHostCallback
+  Service +-down- DeviceData
+  Service +-down- RoomData
+  Service +-down- Coords
+  DeviceData o-- Coords : coords
+  Sync -up-|> Service
+  Sync o-- SyncThread : syncThread
+  Sync +-down- SyncThread
+  SyncThread -up-|> AsyncTask
+  Timer -up-|> AppCompatActivity
+  Timer +-down- ChangeText
+  Timer +-down- SendTime
+  ChangeText -up-|> CountDownTimer
+  HostCallbacks -up-|> FragmentHostCallback
+  Video -up-|> SurfaceTextureListener
+  Video -up-|> Activity
+  VideoSurfaceView -up-|> Callback
+  VideoSurfaceView -up-|> SurfaceView
+  VideoSurfaceView o-- DrawThread : drawThread
+  VideoSurfaceView +-down- DrawThread
+  BaseSavedState -up-|> AbsSavedState
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

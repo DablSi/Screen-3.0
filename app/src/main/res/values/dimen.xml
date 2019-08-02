@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="texture_view_width">320dp</dimen>
+    <dimen name="texture_view_height">176dp</dimen>
+    <dimen name="square_width">50dp</dimen>
+    <dimen name="square_height">100dp</dimen>
+    <dimen name="rec_width">285dp</dimen>
+</resources>

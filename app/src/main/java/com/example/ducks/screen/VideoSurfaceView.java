@@ -1,0 +1,104 @@
+package com.example.ducks.screen;
+
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+import java.util.NoSuchElementException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private DrawThread drawThread;
+    public static int ax = 0, ay = 0, bx = 640, by = 480;
+    public static boolean end = false, start = false;
+
+    public VideoSurfaceView(Context context) {
+        super(context);
+        getHolder().addCallback(this);
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        end = false;
+        drawThread = new DrawThread(getContext(), getHolder());
+        drawThread.start();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        drawThread.requestStop();
+    }
+
+    class DrawThread extends Thread {
+
+        private SurfaceHolder surfaceHolder;
+
+        private volatile boolean running = true; // флаг для остановки потока
+
+        public DrawThread(Context context, SurfaceHolder surfaceHolder) {
+            this.surfaceHolder = surfaceHolder;
+        }
+
+        public void requestStop() {
+            running = false;
+            end = true;
+        }
+
+        @Override
+        public void run() {
+            final Timer timer = new Timer();
+
+            while (!start)
+            {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    if (ExtractMpegFramesTest.list.size() > 0) {
+                        if (!running)
+                            timer.cancel();
+                        Canvas canvas = surfaceHolder.lockCanvas();
+                        Paint paint = new Paint();
+                        try {
+                            DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+                            Log.e("Size", ExtractMpegFramesTest.list.size() + "");
+                            Bitmap bm = Bitmap.createBitmap(ExtractMpegFramesTest.list.get(0), ax, ay, bx, by);
+                            bm = Bitmap.createScaledBitmap(bm, (int) (bx * ((float) metrics.widthPixels / (float) bx)), (int) ((float) by * ((float) metrics.heightPixels / (float) by)), true);
+                            canvas.drawBitmap(bm, new Matrix(), paint);
+                            ExtractMpegFramesTest.list.remove(0);
+                        } catch (NoSuchElementException e) {
+                            e.printStackTrace();
+                            if (end)
+                                running = false;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (running)
+                                surfaceHolder.unlockCanvasAndPost(canvas);
+                        }
+                    }
+                }
+            }, 0, 40);
+        }
+    }
+}
+

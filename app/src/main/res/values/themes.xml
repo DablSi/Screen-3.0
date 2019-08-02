@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="Theme.ScreenTheme" parent="Theme.AppCompat.Light">
+        <!-- Here we setting appcompat’s actionBarStyle -->
+        <!-- <item name="actionBarStyle">@style/MyActionBarStyle</item> -->
+
+        <!-- ...and here we setting appcompat’s color theming attrs -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/rubik</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textAllCaps">false</item>
+
+        <!-- The rest of your attributes -->
+    </style>
+</resources>

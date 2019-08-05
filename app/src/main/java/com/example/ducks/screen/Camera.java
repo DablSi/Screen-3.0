@@ -482,7 +482,6 @@ public class Camera extends AppCompatActivity {
 
             /*bitmap = bitmapDownload(1);
             bitmap2 = bitmapDownload(2);
-
             !!! This code is used only for testing !!! */
 
             bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 8, bitmap.getHeight() / 8, false);
@@ -669,6 +668,13 @@ public class Camera extends AppCompatActivity {
                         up = linkedList.getFirst().y;
                         down = linkedList.getLast().y;
 
+                        left /= ((double) bitmap.getWidth() / (double) 100);
+                        up /= ((double) bitmap.getHeight() / (double) 100);
+                        right /= ((double) bitmap.getWidth() / (double) 100);
+                        down /= ((double) bitmap.getHeight() / (double) 100);
+                        //перевод в проценты
+                        // translated into percentages
+
                         Log.d("Coords", left + ";" + up + " " + right + ";" + down);
 
                         int[] ind = {i, j};
@@ -793,7 +799,7 @@ public class Camera extends AppCompatActivity {
     /* При изменении ориентации активности на горизонтальную, превью серьезно искривляется.
      *  Поэтому определяется сам градус наклона, чтобы при повороте перевернуть кнопку и само изображение на выходе. */
     /* When you change the orientation of the activity on the horizontal, the preview seriously bends
-      * Therefore, the degree of inclination itself is determined in order to turn the button and the image itself at the output while turning. */
+     * Therefore, the degree of inclination itself is determined in order to turn the button and the image itself at the output while turning. */
     private class OrientationListener extends OrientationEventListener {
         final int ROTATION_O = 1;
         final int ROTATION_90 = 2;

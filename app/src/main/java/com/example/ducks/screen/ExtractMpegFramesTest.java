@@ -120,8 +120,6 @@ public class ExtractMpegFramesTest {
     private void extractMpegFrames() throws IOException {
         MediaCodec decoder = null;
         MediaExtractor extractor = null;
-        int saveWidth = 640;
-        int saveHeight = 480;
 
         try {
             File inputFile = new File(FILES_DIR);   // must be an absolute path
@@ -146,7 +144,7 @@ public class ExtractMpegFramesTest {
             }
 
             // Could use bx/by from the MediaFormat to get full-size frames.
-            outputSurface = new CodecOutputSurface(saveWidth, saveHeight);
+            outputSurface = new CodecOutputSurface(format.getInteger(MediaFormat.KEY_WIDTH), format.getInteger(MediaFormat.KEY_HEIGHT));
 
             // Create a MediaCodec decoder, and configure it with the MediaFormat from the
             // extractor.  It's very important to use the format from the extractor because

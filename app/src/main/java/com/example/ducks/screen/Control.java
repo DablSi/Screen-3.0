@@ -55,7 +55,7 @@ public class Control extends AppCompatActivity {
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            long time = System.currentTimeMillis() + (int) Sync.deltaT + 15000;
+            long time = System.currentTimeMillis() + (int) Sync.deltaT + 2000;
             Call<Void> call = retrofit.create(Service.class).putStartVideo(room, time);
             try {
                 call.execute();

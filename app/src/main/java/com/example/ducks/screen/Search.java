@@ -3,6 +3,7 @@ package com.example.ducks.screen;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.os.*;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
@@ -40,6 +41,7 @@ public class Search extends AppCompatActivity {
     private Retrofit retrofit;
     public static long l;
     private Service service;
+    private float mVideoHeight, mVideoWidth;
 
     //для полноэкранного режима
     //for fullscreen mode
@@ -53,6 +55,27 @@ public class Search extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        }
+    }
+
+    //получение размеров видеофайла
+    //get video sizes (width & height)
+    private void calculateVideoSize() {
+        try {
+            FileDescriptor fd = new FileInputStream(ExtractMpegFramesTest.FILES_DIR).getFD();
+            MediaMetadataRetriever metaRetriever = new MediaMetadataRetriever();
+            metaRetriever.setDataSource(fd);
+            String height = metaRetriever
+                    .extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT);
+            String width = metaRetriever
+                    .extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH);
+            mVideoHeight = Float.parseFloat(height);
+            mVideoWidth = Float.parseFloat(width);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 
@@ -168,12 +191,15 @@ public class Search extends AppCompatActivity {
                             coords = response.body();
                             Thread.sleep(150);
                         }
-                        VideoSurfaceView.ax = (int) coords.x1;
-                        VideoSurfaceView.bx = (int) coords.x2;
-                        VideoSurfaceView.ay = (int) coords.y1;
-                        VideoSurfaceView.by = (int) coords.y2;
+                        calculateVideoSize();
+                        VideoSurfaceView.ax = (int) (mVideoWidth * (coords.x1 / 100));
+                        VideoSurfaceView.bx *= coords.x2 / 100;
+                        VideoSurfaceView.ay = (int) (mVideoHeight * (coords.y1 / 100));
+                        VideoSurfaceView.by *= coords.y2 / 100;
                         //получение координат
                         //get coordinates
+
+                        Log.e("Coords", VideoSurfaceView.ax + ";" + VideoSurfaceView.ay + " " + VideoSurfaceView.bx + ";" + VideoSurfaceView.by);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

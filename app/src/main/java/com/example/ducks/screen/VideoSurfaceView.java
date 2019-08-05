@@ -2,10 +2,7 @@ package com.example.ducks.screen;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
+import android.graphics.*;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -81,7 +78,12 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         try {
                             DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
                             Log.e("Size", ExtractMpegFramesTest.list.size() + "");
-                            Bitmap bm = Bitmap.createBitmap(ExtractMpegFramesTest.list.get(0), ax, ay, bx, by);
+                            Bitmap bm = Bitmap.createBitmap(bx - ax,
+                                    by - ay, Bitmap.Config.ARGB_8888);
+                            Rect srcRect = new Rect(ax, ay, bx, by);
+                            Rect desRect = new Rect(0, 0, bx - ax, by - ay);
+                            Canvas cut = new Canvas(bm);
+                            cut.drawBitmap(ExtractMpegFramesTest.list.get(0), srcRect, desRect, null);
                             bm = Bitmap.createScaledBitmap(bm, (int) (bx * ((float) metrics.widthPixels / (float) bx)), (int) ((float) by * ((float) metrics.heightPixels / (float) by)), true);
                             canvas.drawBitmap(bm, new Matrix(), paint);
                             ExtractMpegFramesTest.list.remove(0);

@@ -12,6 +12,8 @@ import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.example.ducks.screen.ExtractMpegFramesTest.FPS;
+
 public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     private DrawThread drawThread;
@@ -73,6 +75,8 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 }
             }
 
+            Log.e("FPS", 1000 / FPS + "");
+
             timer.schedule(new TimerTask() {
                 public void run() {
                     if (ExtractMpegFramesTest.list.size() > 0) {
@@ -97,8 +101,7 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         }
                     }
                 }
-                // TODO period брать по кодеку!
-            }, 0, 40);
+            }, 0, 1000 / FPS);
         }
     }
 }

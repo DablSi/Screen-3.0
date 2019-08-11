@@ -53,13 +53,14 @@ import static java.lang.Thread.sleep;
  */
 public class ExtractMpegFramesTest {
     private static final String TAG = "ExtractMpegFramesTest";
-    private static final boolean VERBOSE = true;           // lots of logging
+    private static final boolean VERBOSE = false;           // lots of logging
 
     // where to find files (note: requires WRITE_EXTERNAL_STORAGE permission)
     public static String FILES_DIR;
     private static CodecOutputSurface outputSurface = null;
 
     public static List<Bitmap> list;
+    public static int FPS;
 
     /**
      * test entry point
@@ -138,6 +139,7 @@ public class ExtractMpegFramesTest {
             extractor.selectTrack(trackIndex);
 
             MediaFormat format = extractor.getTrackFormat(trackIndex);
+            FPS = format.getInteger(MediaFormat.KEY_FRAME_RATE);
             if (VERBOSE) {
                 Log.d(TAG, "Video size is " + format.getInteger(MediaFormat.KEY_WIDTH) + "x" +
                         format.getInteger(MediaFormat.KEY_HEIGHT));

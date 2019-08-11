@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -42,6 +43,9 @@ public class Main extends AppCompatActivity {
     private VerticalStepView verticalStepView;
     private static int position = 0;
     private static LinkedList<String> source;
+    public static int videoH=0;
+    public static int videoW=0;
+
 
     //открывает проводник для выбора файла
     // opens explorer to select file
@@ -61,6 +65,12 @@ public class Main extends AppCompatActivity {
                 String selectedImagePath = getPath(selectedImageUri);
                 if (selectedImagePath != null) {
                     Log.e("FILE", selectedImagePath);
+                    //!!!
+                    MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                    retriever.setDataSource(selectedImagePath);
+                    videoW = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
+                    videoH = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT));
+                    retriever.release();
                     ExtractMpegFramesTest.FILES_DIR = selectedImagePath;
                     RoomAsync roomAsync = new RoomAsync();
                     roomAsync.start();

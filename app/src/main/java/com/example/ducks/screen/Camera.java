@@ -435,7 +435,7 @@ public class Camera extends AppCompatActivity {
     }
 
     //сохранение фотографий в памяти телефона
-    //!!!данная функция используется только для тестов!!!
+    //!!! данная функция используется только для тестов!!!
     //store photos in the phone’s memory
     //!!! this function is used only for tests !!!
     void bitmapUpload(Bitmap b, int i) {
@@ -668,12 +668,23 @@ public class Camera extends AppCompatActivity {
                         up = linkedList.getFirst().y;
                         down = linkedList.getLast().y;
 
-                        left /= ((double) bitmap.getWidth() / (double) 100);
-                        up /= ((double) bitmap.getHeight() / (double) 100);
-                        right /= ((double) bitmap.getWidth() / (double) 100);
-                        down /= ((double) bitmap.getHeight() / (double) 100);
-                        //перевод в проценты
-                        // translated into percentages
+                        double scaleH = (double) bitmap.getHeight() / Main.videoH;
+                        double scaleW = (double) bitmap.getWidth() / Main.videoW;
+                        double scale = scaleH < scaleW ? scaleH : scaleW;
+
+
+                        left /= scale;
+                        up /= scale;
+                        right /= scale;
+                        down /= scale;
+                        double h = bitmap.getHeight() / scale;
+                        double w = bitmap.getWidth() / scale;
+
+                        left = left - w/ 2 + Main.videoW / 2;
+                        up = up - h / 2 + Main.videoH / 2;
+                        right = right - w / 2 + Main.videoW / 2;
+                        down = down - h / 2 + Main.videoH / 2;
+
 
                         Log.d("Coords", left + ";" + up + " " + right + ";" + down);
 

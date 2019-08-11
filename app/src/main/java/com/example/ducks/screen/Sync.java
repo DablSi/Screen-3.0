@@ -112,7 +112,8 @@ public class Sync extends Service {
                     deltaT += (float) D / 10;
                     //получение дельты времени
                     //get time delta
-                    if (t1 % 2 == 0) Log.d(SYNC, "delta is " + (int) deltaT);
+                    //!!!! маленький период грузит систему!
+                    if (t1 % 1000 == 0) Log.d(SYNC, "delta is " + (int) deltaT);
                     Thread.sleep(200);
                 }
 

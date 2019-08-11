@@ -1,20 +1,40 @@
 package com.example.ducks.screen;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.media.MediaMetadataRetriever;
-import android.os.*;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
-import com.google.android.exoplayer2.ExoPlayer;
-import com.google.android.exoplayer2.Player;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -22,12 +42,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import javax.net.ssl.*;
-import java.io.*;
-import java.security.cert.CertificateException;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Search extends AppCompatActivity {
     private RelativeLayout relativeLayout;
@@ -159,20 +173,23 @@ public class Search extends AppCompatActivity {
         public void run() {
             DownloadThread downloadThread = new DownloadThread();
             downloadThread.start();
-            while (time - (System.currentTimeMillis() + (int) Sync.deltaT) - 60 <= 0) {
+            while (time <= 0) {
                 Call<Long> call = service.getTime(android_id);
                 try {
                     Response<Long> userResponse = call.execute();
                     time = userResponse.body();
                     //получение времени изменения цвета
                     //getting color change time
-                    if (time <= System.currentTimeMillis())
-                        Thread.sleep(150);
+                    if (time > 0) break;
+                    Thread.sleep(200);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             Log.d("SEND_AND_RETURN", "" + (time - (System.currentTimeMillis() + (int) Sync.deltaT)));
+            if ((time - (System.currentTimeMillis() + (int) Sync.deltaT) - 80) <= 0)
+                return;
+
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
@@ -192,10 +209,10 @@ public class Search extends AppCompatActivity {
                             Thread.sleep(150);
                         }
                         calculateVideoSize();
-                        VideoSurfaceView.ax = (int) (mVideoWidth * (coords.x1 / 100));
-                        VideoSurfaceView.bx *= coords.x2 / 100;
-                        VideoSurfaceView.ay = (int) (mVideoHeight * (coords.y1 / 100));
-                        VideoSurfaceView.by *= coords.y2 / 100;
+                        VideoSurfaceView.ax = (int) coords.x1;
+                        VideoSurfaceView.bx = (int) coords.x2;
+                        VideoSurfaceView.ay = (int) coords.y1;
+                        VideoSurfaceView.by = (int) coords.y2;
                         //получение координат
                         //get coordinates
 
@@ -214,14 +231,14 @@ public class Search extends AppCompatActivity {
                         });
                         Call<Long> call = null;
                         Call<ResponseBody> videoCall = null;
-                        while (timeStart < System.currentTimeMillis()) {
+                        while (timeStart <= 0) {
                             call = service.getStartVideo(android_id);
                             Response<Long> response = call.execute();
                             timeStart = response.body();
                             //получение времени начала видео
                             //get video start time
-                            if (timeStart < System.currentTimeMillis())
-                                Thread.sleep(150);
+                            if (timeStart > 0) break;
+                            Thread.sleep(200);
                         }
                         runOnUiThread(new Runnable() {
                             @Override
@@ -229,6 +246,8 @@ public class Search extends AppCompatActivity {
                                 Toast.makeText(Search.this, "Время получено", Toast.LENGTH_LONG).show();
                             }
                         });
+                        if (timeStart - (System.currentTimeMillis() + (int) Sync.deltaT) <= 0)
+                            return;
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override

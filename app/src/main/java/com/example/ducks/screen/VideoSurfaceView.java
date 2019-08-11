@@ -58,11 +58,16 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         @Override
         public void run() {
             final Timer timer = new Timer();
+            DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+            Log.d("Metrics ", metrics.heightPixels + "x" + metrics.widthPixels);
+            Matrix matrix = new Matrix();
+            float scale = (float) metrics.heightPixels / (by - ay);
+            matrix.preScale(scale, scale);
+            matrix.postTranslate(-scale * ax, -scale * ay);
 
-            while (!start)
-            {
+            while (!start) {
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(5);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -76,17 +81,10 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         Canvas canvas = surfaceHolder.lockCanvas();
                         Paint paint = new Paint();
                         try {
-                            DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-                            Log.e("Size", ExtractMpegFramesTest.list.size() + "");
-                            Bitmap bm = Bitmap.createBitmap(bx - ax,
-                                    by - ay, Bitmap.Config.ARGB_8888);
-                            Rect srcRect = new Rect(ax, ay, bx, by);
-                            Rect desRect = new Rect(0, 0, bx - ax, by - ay);
-                            Canvas cut = new Canvas(bm);
-                            cut.drawBitmap(ExtractMpegFramesTest.list.get(0), srcRect, desRect, null);
-                            bm = Bitmap.createScaledBitmap(bm, (int) (bx * ((float) metrics.widthPixels / (float) bx)), (int) ((float) by * ((float) metrics.heightPixels / (float) by)), true);
-                            canvas.drawBitmap(bm, new Matrix(), paint);
-                            ExtractMpegFramesTest.list.remove(0);
+                            synchronized (ExtractMpegFramesTest.list) {
+                                canvas.drawBitmap(ExtractMpegFramesTest.list.get(0), matrix, paint);
+                                ExtractMpegFramesTest.list.remove(0);
+                            }
                         } catch (NoSuchElementException e) {
                             e.printStackTrace();
                             if (end)
@@ -99,6 +97,7 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         }
                     }
                 }
+                // TODO period брать по кодеку!
             }, 0, 40);
         }
     }

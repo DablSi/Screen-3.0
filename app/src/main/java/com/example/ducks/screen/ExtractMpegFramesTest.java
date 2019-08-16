@@ -21,6 +21,7 @@ import android.media.MediaCodec;
 import android.media.MediaExtractor;
 import android.media.MediaFormat;
 import android.opengl.*;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
 
@@ -66,6 +67,7 @@ public class ExtractMpegFramesTest {
      * test entry point
      */
     public void testExtractMpegFrames() throws Throwable {
+        new AudioExtractor().genVideoUsingMuxer(FILES_DIR, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/audio.mp4", -1, -1, true, false);
         if (list != null)
             list.clear();
         list = Collections.synchronizedList(new LinkedList<Bitmap>());

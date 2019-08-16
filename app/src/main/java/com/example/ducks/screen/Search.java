@@ -2,6 +2,7 @@ package com.example.ducks.screen;
 
 import android.content.Context;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;

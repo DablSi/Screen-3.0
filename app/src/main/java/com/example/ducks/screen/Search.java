@@ -1,6 +1,7 @@
 package com.example.ducks.screen;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -57,6 +58,7 @@ public class Search extends AppCompatActivity {
     public static long l;
     private Service service;
     private float mVideoHeight, mVideoWidth;
+    private MediaPlayer mediaPlayer;
 
     //для полноэкранного режима
     //for fullscreen mode
@@ -228,6 +230,20 @@ public class Search extends AppCompatActivity {
                                     throwable.printStackTrace();
                                 }
                                 setContentView(new VideoSurfaceView(Search.this));
+                                mediaPlayer = new MediaPlayer();
+                                try {
+                                    mediaPlayer.setDataSource(ExtractMpegFramesTest.AUDIO_DIR);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                                try {
+                                    mediaPlayer.prepare();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                mediaPlayer.start();
+                                mediaPlayer.setVolume(0, 0);
                             }
                         });
                         Call<Long> call = null;
@@ -249,6 +265,8 @@ public class Search extends AppCompatActivity {
                         });
                         if (timeStart - (System.currentTimeMillis() + (int) Sync.deltaT) <= 0)
                             return;
+                        int maxVolume = 100;
+                        float log1 = (float) (Math.log(maxVolume) / Math.log(maxVolume));
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
@@ -257,6 +275,8 @@ public class Search extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         VideoSurfaceView.start = true;
+                                        mediaPlayer.seekTo(0);
+                                        mediaPlayer.setVolume(log1, log1);
                                     }
                                 });
                             }
@@ -311,12 +331,6 @@ public class Search extends AppCompatActivity {
                     color2 = colorResponse.body()[1];
                     //получение цветов
                     //get colors
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            relativeLayout.setBackgroundColor(color1);
-                        }
-                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -329,6 +343,13 @@ public class Search extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    relativeLayout.setBackgroundColor(color1);
+                }
+            });
         }
     }
 

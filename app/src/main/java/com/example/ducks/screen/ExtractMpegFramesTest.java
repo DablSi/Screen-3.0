@@ -57,7 +57,7 @@ public class ExtractMpegFramesTest {
     private static final boolean VERBOSE = false;           // lots of logging
 
     // where to find files (note: requires WRITE_EXTERNAL_STORAGE permission)
-    public static String FILES_DIR;
+    public static String FILES_DIR, AUDIO_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/audio.mp4";
     private static CodecOutputSurface outputSurface = null;
 
     public static List<Bitmap> list;
@@ -67,7 +67,7 @@ public class ExtractMpegFramesTest {
      * test entry point
      */
     public void testExtractMpegFrames() throws Throwable {
-        new AudioExtractor().genVideoUsingMuxer(FILES_DIR, Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/audio.mp4", -1, -1, true, false);
+        new AudioExtractor().genVideoUsingMuxer(FILES_DIR, AUDIO_DIR, -1, -1, true, false);
         if (list != null)
             list.clear();
         list = Collections.synchronizedList(new LinkedList<Bitmap>());

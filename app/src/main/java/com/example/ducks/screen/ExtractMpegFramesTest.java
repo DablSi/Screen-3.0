@@ -54,7 +54,7 @@ import static java.lang.Thread.sleep;
  */
 public class ExtractMpegFramesTest {
     private static final String TAG = "ExtractMpegFramesTest";
-    private static final boolean VERBOSE = false;           // lots of logging
+    private static final boolean VERBOSE = true;           // lots of logging
 
     // where to find files (note: requires WRITE_EXTERNAL_STORAGE permission)
     public static String FILES_DIR, AUDIO_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/audio.mp4";
@@ -62,6 +62,7 @@ public class ExtractMpegFramesTest {
 
     public static List<Bitmap> list;
     public static int FPS;
+    public static long DURATION;
 
     /**
      * test entry point
@@ -120,7 +121,7 @@ public class ExtractMpegFramesTest {
      * it by adjusting the GL viewport to get letterboxing or pillarboxing, but generally if
      * you're extracting frames you don't want black bars.
      */
-    private void extractMpegFrames() throws IOException {
+    public void extractMpegFrames() throws IOException {
         MediaCodec decoder = null;
         MediaExtractor extractor = null;
 
@@ -142,6 +143,7 @@ public class ExtractMpegFramesTest {
 
             MediaFormat format = extractor.getTrackFormat(trackIndex);
             FPS = format.getInteger(MediaFormat.KEY_FRAME_RATE);
+            DURATION = format.getLong(MediaFormat.KEY_DURATION);
             if (VERBOSE) {
                 Log.d(TAG, "Video size is " + format.getInteger(MediaFormat.KEY_WIDTH) + "x" +
                         format.getInteger(MediaFormat.KEY_HEIGHT));

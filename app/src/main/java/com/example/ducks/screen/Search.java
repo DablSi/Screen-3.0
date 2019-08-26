@@ -1,6 +1,7 @@
 package com.example.ducks.screen;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -27,6 +28,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,10 +57,11 @@ public class Search extends AppCompatActivity {
     public static long timeStart = 0;
     private PowerManager.WakeLock wakeLock;
     private Retrofit retrofit;
-    public static long l;
     private Service service;
     private float mVideoHeight, mVideoWidth;
     private MediaPlayer mediaPlayer;
+    private ExtractMpegFramesTest test;
+    private boolean first = true;
 
     //для полноэкранного режима
     //for fullscreen mode
@@ -223,7 +226,7 @@ public class Search extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                ExtractMpegFramesTest test = new ExtractMpegFramesTest();
+                                test = new ExtractMpegFramesTest();
                                 try {
                                     test.testExtractMpegFrames();
                                 } catch (Throwable throwable) {
@@ -267,6 +270,7 @@ public class Search extends AppCompatActivity {
                             return;
                         int maxVolume = 100;
                         float log1 = (float) (Math.log(maxVolume) / Math.log(maxVolume));
+                        long period = ExtractMpegFramesTest.DURATION / 1000L;
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
@@ -276,11 +280,27 @@ public class Search extends AppCompatActivity {
                                     public void run() {
                                         VideoSurfaceView.start = true;
                                         mediaPlayer.seekTo(0);
-                                        mediaPlayer.setVolume(log1, log1);
+                                        if (first)
+                                            mediaPlayer.setVolume(log1, log1);
+                                        else {
+                                            try {
+                                                mediaPlayer.setVolume(0, 0);
+                                                VideoSurfaceView.start = false;
+                                                test.testExtractMpegFrames();
+                                                Thread.sleep(2000);
+                                                VideoSurfaceView.start = true;
+                                                mediaPlayer.seekTo(0);
+                                                mediaPlayer.setVolume(log1, log1);
+                                                timer.cancel();
+                                            } catch (Throwable throwable) {
+                                                throwable.printStackTrace();
+                                            }
+                                        }
+                                        first = false;
                                     }
                                 });
                             }
-                        }, timeStart - (System.currentTimeMillis() + (int) Sync.deltaT));
+                        }, timeStart - (System.currentTimeMillis() + (int) Sync.deltaT), period);
 
                         while (ExtractMpegFramesTest.FILES_DIR == null) {
                             Thread.sleep(150);

@@ -270,7 +270,6 @@ public class Search extends AppCompatActivity {
                             return;
                         int maxVolume = 100;
                         float log1 = (float) (Math.log(maxVolume) / Math.log(maxVolume));
-                        long period = ExtractMpegFramesTest.DURATION / 1000L;
                         Timer timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
@@ -280,27 +279,11 @@ public class Search extends AppCompatActivity {
                                     public void run() {
                                         VideoSurfaceView.start = true;
                                         mediaPlayer.seekTo(0);
-                                        if (first)
-                                            mediaPlayer.setVolume(log1, log1);
-                                        else {
-                                            try {
-                                                mediaPlayer.setVolume(0, 0);
-                                                VideoSurfaceView.start = false;
-                                                test.testExtractMpegFrames();
-                                                Thread.sleep(2000);
-                                                VideoSurfaceView.start = true;
-                                                mediaPlayer.seekTo(0);
-                                                mediaPlayer.setVolume(log1, log1);
-                                                timer.cancel();
-                                            } catch (Throwable throwable) {
-                                                throwable.printStackTrace();
-                                            }
-                                        }
-                                        first = false;
+                                        mediaPlayer.setVolume(log1, log1);
                                     }
                                 });
                             }
-                        }, timeStart - (System.currentTimeMillis() + (int) Sync.deltaT), period);
+                        }, timeStart - (System.currentTimeMillis() + (int) Sync.deltaT));
 
                         while (ExtractMpegFramesTest.FILES_DIR == null) {
                             Thread.sleep(150);

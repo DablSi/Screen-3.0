@@ -79,7 +79,7 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
             timer.schedule(new TimerTask() {
                 public void run() {
-                    if (ExtractMpegFramesTest.list.size() > 0 && start) {
+                    if (ExtractMpegFramesTest.list.size() > 0 && start && !Search.paused) {
                         if (!running)
                             timer.cancel();
                         Canvas canvas = surfaceHolder.lockCanvas();

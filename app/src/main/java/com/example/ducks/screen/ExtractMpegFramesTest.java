@@ -218,7 +218,7 @@ public class ExtractMpegFramesTest {
         boolean outputDone = false;
         boolean inputDone = false;
         while (!outputDone) {
-            if (VideoSurfaceView.end || list.size() >= 20) {
+            if (list.size() >= 20) {
                 sleep(10);
                 continue;
             }

@@ -61,7 +61,7 @@ public class Search extends AppCompatActivity {
     private float mVideoHeight, mVideoWidth;
     private MediaPlayer mediaPlayer;
     private ExtractMpegFramesTest test;
-    private boolean first = true;
+    public static boolean paused = false;
 
     //для полноэкранного режима
     //for fullscreen mode
@@ -280,6 +280,7 @@ public class Search extends AppCompatActivity {
                                         VideoSurfaceView.start = true;
                                         mediaPlayer.seekTo(0);
                                         mediaPlayer.setVolume(log1, log1);
+                                        new getPause().start();
                                     }
                                 });
                             }
@@ -398,6 +399,51 @@ public class Search extends AppCompatActivity {
             return builder;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    class getPause extends Thread {
+        boolean syncronized = false;
+
+        @Override
+        public void run() {
+            super.run();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(URL)
+                    .client(getUnsafeOkHttpClient().build())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+            while (true) {
+                Call<Boolean> call = retrofit.create(Service.class).getPause(Search.room);
+                try {
+                    Response<Boolean> response = call.execute();
+                    Boolean pause = response.body();
+                    //получение паузы
+                    //get pause
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (pause != null) {
+                                if (pause != paused) {
+                                    if (pause) {
+                                        paused = true;
+                                        mediaPlayer.pause();
+                                        Log.e("Pause", "true");
+                                    } else {
+                                        paused = false;
+                                        mediaPlayer.start();
+                                        Log.e("Pause", "false");
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    Thread.sleep(300);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

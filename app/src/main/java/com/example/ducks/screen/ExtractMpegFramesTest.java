@@ -54,7 +54,7 @@ import static java.lang.Thread.sleep;
  */
 public class ExtractMpegFramesTest {
     private static final String TAG = "ExtractMpegFramesTest";
-    private static final boolean VERBOSE = true;           // lots of logging
+    private static final boolean VERBOSE = false;           // lots of logging
 
     // where to find files (note: requires WRITE_EXTERNAL_STORAGE permission)
     public static String FILES_DIR, AUDIO_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/audio.mp4";

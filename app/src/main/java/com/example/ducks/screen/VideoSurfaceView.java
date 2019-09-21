@@ -11,6 +11,9 @@ import android.view.SurfaceView;
 import java.util.NoSuchElementException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.ducks.screen.ExtractMpegFramesTest.FPS;
 
@@ -75,10 +78,13 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 }
             }
 
-            Log.e("FPS", 1000 / FPS + "");
+            Log.e("FPS", FPS + "");
 
-            timer.schedule(new TimerTask() {
+            ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+            service.scheduleAtFixedRate(new Runnable() {
+                @Override
                 public void run() {
+                    Log.e("BOBO", "BOBO");
                     if (ExtractMpegFramesTest.list.size() > 0 && start && !Search.paused) {
                         if (!running)
                             timer.cancel();
@@ -101,7 +107,7 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         }
                     }
                 }
-            }, 0, 1000 / FPS);
+            }, 0, 1000 / FPS, TimeUnit.MILLISECONDS);
         }
     }
 }

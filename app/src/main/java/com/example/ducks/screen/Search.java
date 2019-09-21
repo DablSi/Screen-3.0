@@ -31,6 +31,9 @@ import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -297,7 +300,7 @@ public class Search extends AppCompatActivity {
                         throwable.printStackTrace();
                     }
                 }
-            }, time - (System.currentTimeMillis() + (int) Sync.deltaT) - 80);
+            }, time - (System.currentTimeMillis() + (int) Sync.deltaT) - 120);
         }
     }
 

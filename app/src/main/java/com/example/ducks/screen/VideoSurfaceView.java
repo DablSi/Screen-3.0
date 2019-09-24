@@ -49,7 +49,7 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
         private SurfaceHolder surfaceHolder;
 
-        private volatile boolean running = true; // флаг для остановки потока
+        private boolean running = true; // флаг для остановки потока
 
         public DrawThread(Context context, SurfaceHolder surfaceHolder) {
             this.surfaceHolder = surfaceHolder;
@@ -62,9 +62,11 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
         @Override
         public void run() {
-            final Timer timer = new Timer();
             DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
             Log.d("Metrics ", metrics.heightPixels + "x" + metrics.widthPixels);
+
+            // обрезка видео
+            // video trimming
             Matrix matrix = new Matrix();
             float scale = (float) metrics.heightPixels / (by - ay);
             matrix.preScale(scale, scale);
@@ -84,10 +86,9 @@ public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             service.scheduleAtFixedRate(new Runnable() {
                 @Override
                 public void run() {
-                    Log.e("BOBO", "BOBO");
                     if (ExtractMpegFramesTest.list.size() > 0 && start && !Search.paused) {
                         if (!running)
-                            timer.cancel();
+                            service.shutdown();
                         Canvas canvas = surfaceHolder.lockCanvas();
                         Paint paint = new Paint();
                         try {

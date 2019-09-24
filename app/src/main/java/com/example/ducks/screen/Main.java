@@ -1,23 +1,17 @@
 package com.example.ducks.screen;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -47,7 +41,7 @@ public class Main extends AppCompatActivity {
     public static int videoW=0;
 
 
-    //открывает проводник для выбора файла
+    // открывает проводник для выбора файла
     // opens explorer to select file
     private void showFileChooser() {
         Intent intent = new Intent();
@@ -56,8 +50,8 @@ public class Main extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, "Select Video"), REQUEST_TAKE_GALLERY_VIDEO);
     }
 
-    //открывает таймер, если фото было удачным
-    //opens the timer if the photo was successful
+    // открывает таймер, если фото было удачным
+    // opens the timer if the photo was successful
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
@@ -65,7 +59,6 @@ public class Main extends AppCompatActivity {
                 String selectedImagePath = getPath(selectedImageUri);
                 if (selectedImagePath != null) {
                     Log.e("FILE", selectedImagePath);
-                    //!!!
                     MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                     retriever.setDataSource(selectedImagePath);
                     videoW = Integer.valueOf(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH));
@@ -94,14 +87,15 @@ public class Main extends AppCompatActivity {
             Service service = retrofit.create(Service.class);
             Call<Integer> integerCall = service.getRoom();
             try {
+                // получение номера комнаты
+                // get room number
                 Response<Integer> integerResponse = integerCall.execute();
                 room = integerResponse.body();
-                //получение номера комнаты
-                //get room number
+
+                // создание комнаты
+                // create room
                 Call<Integer> call = service.putDevice(android_id, room, null);
                 call.execute();
-                //создание комнаты
-                //create room
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -120,8 +114,8 @@ public class Main extends AppCompatActivity {
             File file = new File(ExtractMpegFramesTest.FILES_DIR);
             RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
             MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("video", file.getName(), requestBody);
-            //загрузка видео на сервер
-            //upload video to the server
+            // загрузка видео на сервер
+            // upload video to the server
             service.uploadVideo(fileToUpload, room).enqueue(new Callback<Void>() {
 
                 @Override
@@ -150,8 +144,8 @@ public class Main extends AppCompatActivity {
         }
     }
 
-    //получение пути из URI
-    //get the path from URI
+    // получение пути из URI
+    // get the path from URI
     private String getPath(Uri uri) {
         if ("content".equalsIgnoreCase(uri.getScheme())) {
             String[] projection = {MediaStore.Video.Media.DISPLAY_NAME};

@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         return dp * (context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
+    //запуск сервисов
+    //launch service
     class ServiceThread extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -69,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
             if (!Sync.isStarted)
                 startService(new Intent(MainActivity.this, Sync.class));
             startService(new Intent(MainActivity.this, Autorun.class));
-            //запуск сервисов
-            //launch service
             return null;
         }
     }

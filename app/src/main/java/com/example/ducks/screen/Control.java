@@ -58,9 +58,9 @@ public class Control extends AppCompatActivity {
             long time = System.currentTimeMillis() + (int) Sync.deltaT + 2000;
             Call<Void> call = retrofit.create(Service.class).putStartVideo(room, time);
             try {
+                // отправка времени
+                // send time
                 call.execute();
-                //отправка времени
-                //send time
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -78,9 +78,9 @@ public class Control extends AppCompatActivity {
                     .build();
             Call<Void> call = retrofit.create(Service.class).setPause(room, isPaused);
             try {
+                // отправка паузы
+                // send pause
                 call.execute();
-                //отправка паузы
-                //send pause
             } catch (Exception e) {
                 e.printStackTrace();
             }

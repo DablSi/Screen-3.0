@@ -1,7 +1,6 @@
 package com.example.ducks.screen;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
@@ -18,30 +17,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.security.cert.CertificateException;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -49,6 +26,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import javax.net.ssl.*;
+import java.io.*;
+import java.security.cert.CertificateException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Search extends AppCompatActivity {
     private RelativeLayout relativeLayout;
@@ -66,8 +49,8 @@ public class Search extends AppCompatActivity {
     private ExtractMpegFramesTest test;
     public static boolean paused = false;
 
-    //для полноэкранного режима
-    //for fullscreen mode
+    // для полноэкранного режима
+    // for fullscreen mode
     private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -81,8 +64,8 @@ public class Search extends AppCompatActivity {
         }
     }
 
-    //получение размеров видеофайла
-    //get video sizes (width & height)
+    // получение размеров видеофайла
+    // get video sizes (width & height)
     private void calculateVideoSize() {
         try {
             FileDescriptor fd = new FileInputStream(ExtractMpegFramesTest.FILES_DIR).getFD();
@@ -107,11 +90,11 @@ public class Search extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        // отключение блокировки экрана
+        // screen lock off
         PowerManager powerManager = (PowerManager) Search.this.getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "screen:logtag");
         wakeLock.acquire();
-        //отключение блокировки экрана
-        //screen lock off
 
         EditText editText = findViewById(R.id.editText);
         relativeLayout = findViewById(R.id.ll);
@@ -137,6 +120,12 @@ public class Search extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        wakeLock.release();
+    }
+
     class SendThread extends Thread {
 
         @Override
@@ -150,13 +139,14 @@ public class Search extends AppCompatActivity {
                     .client(getUnsafeOkHttpClient().build())
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
+
+            // добавление телефона в комнату
+            // add phone to room
             service = retrofit.create(Service.class);
             Call<Integer> call = service.putDevice(android_id, room, null);
             try {
                 Response<Integer> response = call.execute();
                 if (response.body() == 0) {
-                    //добавление телефона в комнату
-                    //add phone to room
                     Log.d("SEND_AND_RETURN", "Ready.");
                     GetThread getThread = new GetThread();
                     getThread.start();
@@ -176,7 +166,7 @@ public class Search extends AppCompatActivity {
     }
 
     class GetThread extends Thread {
-        long time = 0, mediaTime;
+        long time = 0;
 
         @Override
         public void run() {
@@ -185,10 +175,11 @@ public class Search extends AppCompatActivity {
             while (time <= 0) {
                 Call<Long> call = service.getTime(android_id);
                 try {
+                    // получение времени изменения цвета
+                    // getting color change time
                     Response<Long> userResponse = call.execute();
                     time = userResponse.body();
-                    //получение времени изменения цвета
-                    //getting color change time
+
                     if (time > 0) break;
                     Thread.sleep(200);
                 } catch (Exception e) {
@@ -218,12 +209,13 @@ public class Search extends AppCompatActivity {
                             Thread.sleep(150);
                         }
                         calculateVideoSize();
+
+                        // получение координат
+                        // get coordinates
                         VideoSurfaceView.ax = (int) coords.x1;
                         VideoSurfaceView.bx = (int) coords.x2;
                         VideoSurfaceView.ay = (int) coords.y1;
                         VideoSurfaceView.by = (int) coords.y2;
-                        //получение координат
-                        //get coordinates
 
                         Log.e("Coords", VideoSurfaceView.ax + ";" + VideoSurfaceView.ay + " " + VideoSurfaceView.bx + ";" + VideoSurfaceView.by);
                         runOnUiThread(new Runnable() {
@@ -256,10 +248,11 @@ public class Search extends AppCompatActivity {
                         Call<ResponseBody> videoCall = null;
                         while (timeStart <= 0) {
                             call = service.getStartVideo(android_id);
+                            // получение времени начала видео
+                            // get video start time
                             Response<Long> response = call.execute();
                             timeStart = response.body();
-                            //получение времени начала видео
-                            //get video start time
+
                             if (timeStart > 0) break;
                             Thread.sleep(200);
                         }
@@ -283,7 +276,7 @@ public class Search extends AppCompatActivity {
                                         VideoSurfaceView.start = true;
                                         mediaPlayer.seekTo(0);
                                         mediaPlayer.setVolume(log1, log1);
-                                        new getPause().start();
+                                        new GetPause().start();
                                     }
                                 });
                             }
@@ -310,13 +303,13 @@ public class Search extends AppCompatActivity {
         public void run() {
             Call<ResponseBody> call2 = service.getFile(room);
             call2.enqueue(new Callback<ResponseBody>() {
+                // видео получено
+                // video downloaded
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     responseBody = response;
                     VideoThread videoThread = new VideoThread();
                     videoThread.start();
-                    //видео получено
-                    //video downloaded
                 }
 
                 @Override
@@ -333,11 +326,11 @@ public class Search extends AppCompatActivity {
             try {
                 Call<int[]> call2 = service.getColor(android_id);
                 try {
+                    // получение цветов
+                    // get colors
                     Response<int[]> colorResponse = call2.execute();
                     color1 = colorResponse.body()[0];
                     color2 = colorResponse.body()[1];
-                    //получение цветов
-                    //get colors
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -360,12 +353,12 @@ public class Search extends AppCompatActivity {
         }
     }
 
-    // здесь получала SSLHandshakeException для URL из частного облака https://cloud.itx.ru
+    // здесь получала SSLHandshakeException для URL из частного облака https:// cloud.itx.ru
     // решение в создании TrustManager который не проверяет цепочку сертификатов HTTPS
-    // см https://mobikul.com/android-retrofit-handling-sslhandshakeexception/
-    // here received SSLHandshakeException for URLs from private cloud https://cloud.itx.ru
+    // см https:// mobikul.com/android-retrofit-handling-sslhandshakeexception/
+    // here received SSLHandshakeException for URLs from private cloud https:// cloud.itx.ru
     // solution in creating TrustManager that does not check the HTTPS certificate chain
-    // see https://mobikul.com/android-retrofit-handling-sslhandshakeexception/
+    // see https:// mobikul.com/android-retrofit-handling-sslhandshakeexception/
     public static OkHttpClient.Builder getUnsafeOkHttpClient() {
         try {
             // Create a trust manager that does not validate certificate chains
@@ -386,7 +379,7 @@ public class Search extends AppCompatActivity {
                     }
             };
 
-            final SSLContext sslContext = SSLContext.getInstance("SSL");
+            final SSLContext sslContext = SSLContext.getInstance("TLS");
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
 
             final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
@@ -405,7 +398,7 @@ public class Search extends AppCompatActivity {
         }
     }
 
-    class getPause extends Thread {
+    class GetPause extends Thread {
         boolean syncronized = false;
 
         @Override
@@ -420,10 +413,10 @@ public class Search extends AppCompatActivity {
             while (true) {
                 Call<Boolean> call = retrofit.create(Service.class).getPause(Search.room);
                 try {
+                    // получение паузы
+                    // get pause
                     Response<Boolean> response = call.execute();
                     Boolean pause = response.body();
-                    //получение паузы
-                    //get pause
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

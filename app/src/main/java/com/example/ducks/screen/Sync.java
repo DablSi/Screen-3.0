@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,9 +14,7 @@ import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static java.lang.Math.abs;
-
-//synchronization class
+// synchronization class
 public class Sync extends Service {
 
     public static final String SYNC = "Sync";
@@ -37,12 +34,16 @@ public class Sync extends Service {
 
     @Override
     public void onCreate() {
+        // получение прошлой дельты из sharedPreferences
+        // get last delta from sharedPreferences
         SharedPreferences sp = getSharedPreferences("Sync", MODE_PRIVATE);
         deltaT = sp.getFloat("deltaT", 0);
+
         syncThread = new SyncThread();
         syncThread.execute();
-        //получение прошлой дельты из sharedPreferences
-        //get last delta from sharedPreferences
+
+        // сохранение дельты в sharedPreferences для быстрой повторной синхронизации
+        // save delta to sharedPreferences for fast re-sync
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -52,8 +53,6 @@ public class Sync extends Service {
                 edit.commit();
             }
         }, 5000, 5000);
-        //сохранение дельты в sharedPreferences для быстрой повторной синхронизации
-        //save delta to sharedPreferences for fast re-sync
     }
 
 
@@ -88,9 +87,9 @@ public class Sync extends Service {
                 stopService(new Intent(Sync.this, Sync.class));
                 return null;
             }
+            // успешное подключение к серверу
+            // successfully connected to the server
             Log.d("Everything is fine: ", "Connected");
-            //успешное подключение к серверу
-            //successfully connected to the server
             DataInputStream input = null;
             DataOutputStream outputStream = null;
             try {
@@ -100,6 +99,8 @@ public class Sync extends Service {
                 e.printStackTrace();
             }
             try {
+                // получение дельты времени
+                // get time delta
                 while (true) {
                     t1 = System.currentTimeMillis() + (int) deltaT;
                     outputStream.writeLong(t1);
@@ -110,9 +111,6 @@ public class Sync extends Service {
                     int newD = (int) (t2 - (t1 + t3) / 2);
                     D = newD;
                     deltaT += (float) D / 10;
-                    //получение дельты времени
-                    //get time delta
-                    //!!!! маленький период грузит систему!
                     if (t1 % 1000 == 0) Log.d(SYNC, "delta is " + (int) deltaT);
                     Thread.sleep(200);
                 }

@@ -372,7 +372,7 @@ public class Camera extends AppCompatActivity {
                 public void run() {
                     bitmap = textureView.getBitmap();
                 }
-            }, t - (System.currentTimeMillis() + (int) Sync.deltaT));
+            }, t - (System.currentTimeMillis() + (int) Sync.deltaT) - 30);
 
             /*  Данное фото формально не сохраняется!
                 Оно делается чтобы "обмануть андроид".
@@ -402,7 +402,7 @@ public class Camera extends AppCompatActivity {
                     bitmap2 = textureView.getBitmap();
                     new CordThread().start();
                 }
-            }, t - (System.currentTimeMillis() + (int) Sync.deltaT) + 60);
+            }, t - (System.currentTimeMillis() + (int) Sync.deltaT) + 200);
 
 
             runOnUiThread(new Runnable() {

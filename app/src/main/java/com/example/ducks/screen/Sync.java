@@ -24,6 +24,7 @@ public class Sync extends Service {
     public static String date;
     static long t1, t2, t3;
     public Socket socket;
+    private boolean first = false;
 
 
     private SyncThread syncThread;
@@ -38,6 +39,9 @@ public class Sync extends Service {
         // get last delta from sharedPreferences
         SharedPreferences sp = getSharedPreferences("Sync", MODE_PRIVATE);
         deltaT = sp.getFloat("deltaT", 0);
+        if (deltaT == 0) {
+            first = true;
+        }
 
         syncThread = new SyncThread();
         syncThread.execute();
@@ -51,8 +55,9 @@ public class Sync extends Service {
                 SharedPreferences.Editor edit = sp.edit();
                 edit.putFloat("deltaT", deltaT);
                 edit.commit();
+                first = false;
             }
-        }, 5000, 5000);
+        }, first ? 30000 : 3000, 3000);
     }
 
 
@@ -110,8 +115,12 @@ public class Sync extends Service {
                     t3 = System.currentTimeMillis() + (int) deltaT;
                     int newD = (int) (t2 - (t1 + t3) / 2);
                     D = newD;
-                    deltaT += (float) D / 10;
-                    if (t1 % 1000 == 0) Log.d(SYNC, "delta is " + (int) deltaT);
+                    if (first) {
+                        deltaT += (float) D / 10;
+                    } else {
+                        deltaT += (float) D / 100;
+                    }
+                    Log.d(SYNC, "delta is " + (int) deltaT);
                     Thread.sleep(200);
                 }
 

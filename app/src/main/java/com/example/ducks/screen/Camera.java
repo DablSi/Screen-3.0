@@ -372,7 +372,7 @@ public class Camera extends AppCompatActivity {
                 public void run() {
                     bitmap = textureView.getBitmap();
                 }
-            }, t - (System.currentTimeMillis() + (int) Sync.deltaT) - 30);
+            }, t - (System.currentTimeMillis() + (int) Sync.deltaT) - 60);
 
             /*  Данное фото формально не сохраняется!
                 Оно делается чтобы "обмануть андроид".

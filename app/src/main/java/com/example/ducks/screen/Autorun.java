@@ -13,11 +13,7 @@ public class Autorun extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent arg1) {
         Intent intent = new Intent(context, Sync.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
+        context.startService(intent);
         Log.i("Autorun", "started");
     }
 }

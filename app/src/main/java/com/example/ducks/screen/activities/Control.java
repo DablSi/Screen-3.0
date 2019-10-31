@@ -1,16 +1,19 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import com.example.ducks.screen.R;
+import com.example.ducks.screen.connection.Service;
+import com.example.ducks.screen.connection.Sync;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.ducks.screen.Main.room;
-import static com.example.ducks.screen.Search.URL;
-import static com.example.ducks.screen.Search.getUnsafeOkHttpClient;
+import static com.example.ducks.screen.activities.Main.room;
+import static com.example.ducks.screen.activities.Search.URL;
+import static com.example.ducks.screen.activities.Search.getUnsafeOkHttpClient;
 
 public class Control extends AppCompatActivity {
 

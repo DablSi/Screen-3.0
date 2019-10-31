@@ -5,7 +5,7 @@
               android:background="@android:color/transparent"
               android:orientation="horizontal">
 
-    <com.example.ducks.screen.VerticalStepViewIndicator
+    <com.example.ducks.screen.ui.VerticalStepViewIndicator
             android:id="@+id/step_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

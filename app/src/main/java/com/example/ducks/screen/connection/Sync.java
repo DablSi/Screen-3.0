@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.connection;
 
 import android.app.Service;
 import android.content.Intent;

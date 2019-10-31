@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -7,15 +7,15 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import com.example.ducks.screen.media_codec.ExtractMpegFramesTest;
+import com.example.ducks.screen.activities.Search;
 
 import java.util.NoSuchElementException;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.example.ducks.screen.ExtractMpegFramesTest.FPS;
+import static com.example.ducks.screen.media_codec.ExtractMpegFramesTest.FPS;
 
 public class VideoSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 

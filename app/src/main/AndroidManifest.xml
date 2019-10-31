@@ -22,39 +22,39 @@
             android:theme="@style/Theme.ScreenTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".Control">
+        <activity android:name=".activities.Control">
         </activity>
-        <activity android:name=".Main">
+        <activity android:name=".activities.Main">
         </activity>
 
         <uses-library
                 android:name="org.apache.http.legacy"
                 android:required="false"/>
 
-        <receiver android:name=".Autorun">
+        <receiver android:name=".connection.Autorun">
             <intent-filter>
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
             </intent-filter>
         </receiver>
 
         <service
-                android:name=".Sync"
+                android:name=".connection.Sync"
                 android:enabled="true">
 
             <!-- android:exported="true" -->
         </service>
 
-        <activity android:name=".Search">
+        <activity android:name=".activities.Search">
         </activity>
         <activity
-                android:name=".Camera"
+                android:name=".activities.Camera"
                 android:screenOrientation="portrait">
         </activity>
     </application>

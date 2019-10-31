@@ -1,10 +1,10 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.connection;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
+import com.example.ducks.screen.connection.Sync;
 
 public class Autorun extends BroadcastReceiver {
 

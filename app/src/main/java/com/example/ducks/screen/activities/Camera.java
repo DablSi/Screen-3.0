@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.activities;
 
 
 import android.Manifest;
@@ -19,6 +19,10 @@ import android.util.Range;
 import android.util.Size;
 import android.view.*;
 import android.widget.Toast;
+import com.example.ducks.screen.*;
+import com.example.ducks.screen.connection.Service;
+import com.example.ducks.screen.connection.Sync;
+import com.example.ducks.screen.media_codec.ExtractMpegFramesTest;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -27,10 +31,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.*;
 import java.util.*;
 
-import static com.example.ducks.screen.Main.REQUEST_START_CAMERA_ACTIVITY;
-import static com.example.ducks.screen.Main.android_id;
-import static com.example.ducks.screen.Search.URL;
-import static com.example.ducks.screen.Search.getUnsafeOkHttpClient;
+import static com.example.ducks.screen.activities.Main.REQUEST_START_CAMERA_ACTIVITY;
+import static com.example.ducks.screen.activities.Main.android_id;
+import static com.example.ducks.screen.activities.Search.URL;
+import static com.example.ducks.screen.activities.Search.getUnsafeOkHttpClient;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class Camera extends AppCompatActivity {

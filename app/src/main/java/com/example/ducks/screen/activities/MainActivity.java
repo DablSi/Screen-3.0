@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import com.example.ducks.screen.connection.Autorun;
+import com.example.ducks.screen.R;
+import com.example.ducks.screen.connection.Sync;
 
 public class MainActivity extends AppCompatActivity {
     Button main, wall;

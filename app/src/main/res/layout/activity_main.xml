@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <com.example.ducks.screen.VerticalStepView
+    <com.example.ducks.screen.ui.VerticalStepView
             android:paddingTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

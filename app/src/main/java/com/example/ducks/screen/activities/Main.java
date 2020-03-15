@@ -41,8 +41,8 @@ public class Main extends AppCompatActivity {
     private VerticalStepView verticalStepView;
     private static int position = 0;
     private static LinkedList<String> source;
-    public static int videoH=0;
-    public static int videoW=0;
+    public static int videoH = 0;
+    public static int videoW = 0;
 
 
     // открывает проводник для выбора файла
@@ -51,7 +51,7 @@ public class Main extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setType("video/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Video"), REQUEST_TAKE_GALLERY_VIDEO);
+        startActivityForResult(Intent.createChooser(intent, "Выберите видео"), REQUEST_TAKE_GALLERY_VIDEO);
     }
 
     // открывает таймер, если фото было удачным
@@ -177,7 +177,7 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verticalStepView = findViewById(R.id.steps);
-        if(position == 0) {
+        if (position == 0) {
             source = new LinkedList<>();
             source.add("Выбрать видео");
             source.add("Ввести комнату на всех девайсах видеостены");
@@ -210,7 +210,7 @@ public class Main extends AppCompatActivity {
                     showFileChooser();
                     isUploaded = true;
                 }
-                if(position == 1)
+                if (position == 1)
                     position++;
                 else if (position == 2) {
                     startActivityForResult(new Intent(Main.this, Camera.class), REQUEST_START_CAMERA_ACTIVITY);

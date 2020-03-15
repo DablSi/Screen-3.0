@@ -17,13 +17,17 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.ducks.screen.*;
+import com.example.ducks.screen.audioplayer.IFrameCallback;
+import com.example.ducks.screen.audioplayer.MediaMoviePlayer;
 import com.example.ducks.screen.connection.Service;
 import com.example.ducks.screen.connection.Sync;
 import com.example.ducks.screen.media_codec.ExtractMpegFramesTest;
 import com.example.ducks.screen.ui.VideoSurfaceView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -33,6 +37,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import javax.net.ssl.*;
+
 import java.io.*;
 import java.security.cert.CertificateException;
 import java.util.Timer;
@@ -50,7 +55,7 @@ public class Search extends AppCompatActivity {
     private Retrofit retrofit;
     private Service service;
     private float mVideoHeight, mVideoWidth;
-    private MediaPlayer mediaPlayer;
+    public MediaMoviePlayer mPlayer = null;
     private ExtractMpegFramesTest test;
     public static boolean paused = false;
 
@@ -214,6 +219,8 @@ public class Search extends AppCompatActivity {
                             Thread.sleep(150);
                         }
                         calculateVideoSize();
+                        mPlayer = new MediaMoviePlayer(mIFrameCallback, true);
+                        mPlayer.prepare(ExtractMpegFramesTest.AUDIO_DIR);
 
                         // получение координат
                         // get coordinates
@@ -233,19 +240,6 @@ public class Search extends AppCompatActivity {
                                     throwable.printStackTrace();
                                 }
                                 setContentView(new VideoSurfaceView(Search.this));
-                                mediaPlayer = new MediaPlayer();
-                                try {
-                                    mediaPlayer.setDataSource(ExtractMpegFramesTest.AUDIO_DIR);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                                try {
-                                    mediaPlayer.prepare();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                mediaPlayer.seekTo(0);
                             }
                         });
                         Call<Long> call = null;
@@ -277,9 +271,8 @@ public class Search extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
+                                        mPlayer.play();
                                         VideoSurfaceView.start = true;
-                                        mediaPlayer.start();
-                                        new GetPause().start();
                                     }
                                 });
                             }
@@ -427,11 +420,11 @@ public class Search extends AppCompatActivity {
                                 if (pause != paused) {
                                     if (pause) {
                                         paused = true;
-                                        mediaPlayer.pause();
+                                        mPlayer.pause();
                                         Log.e("Pause", "true");
                                     } else {
                                         paused = false;
-                                        mediaPlayer.start();
+                                        mPlayer.play();
                                         Log.e("Pause", "false");
                                     }
                                 }
@@ -445,4 +438,32 @@ public class Search extends AppCompatActivity {
             }
         }
     }
+
+    private final IFrameCallback mIFrameCallback = new IFrameCallback() {
+        @Override
+        public void onPrepared() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+            //mPlayer.play();
+        }
+
+        @Override
+        public void onFinished() {
+            mPlayer = null;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                }
+            });
+        }
+
+        @Override
+        public boolean onFrameAvailable(long presentationTimeUs) {
+            return false;
+        }
+    };
 }

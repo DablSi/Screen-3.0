@@ -100,13 +100,12 @@ public class Camera extends AppCompatActivity {
             for (String cameraId : cameraManager.getCameraIdList()) {
                 CameraCharacteristics cameraCharacteristics =
                         cameraManager.getCameraCharacteristics(cameraId);
-                if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) ==
-                        cameraFacing) {
+                if (cameraCharacteristics.get(CameraCharacteristics.LENS_FACING) == cameraFacing) {
                     StreamConfigurationMap streamConfigurationMap = cameraCharacteristics.get(
                             CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
                     Display display = getWindowManager().getDefaultDisplay();
                     Point size = new Point();
-                    display.getSize(size);
+                    display.getSize(size); // получение размеров экрана
                     previewSize = chooseOptimalSize(streamConfigurationMap.getOutputSizes(SurfaceTexture.class), size.x, size.y);
                     this.cameraId = cameraId;
                 }
@@ -689,7 +688,7 @@ public class Camera extends AppCompatActivity {
                         double h = bitmap.getHeight() / scale;
                         double w = bitmap.getWidth() / scale;
 
-                        left = left - w/ 2 + Main.videoW / 2;
+                        left = left - w / 2 + Main.videoW / 2;
                         up = up - h / 2 + Main.videoH / 2;
                         right = right - w / 2 + Main.videoW / 2;
                         down = down - h / 2 + Main.videoH / 2;

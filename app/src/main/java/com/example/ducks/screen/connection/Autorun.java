@@ -1,10 +1,10 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.connection;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
+import com.example.ducks.screen.connection.Sync;
 
 public class Autorun extends BroadcastReceiver {
 
@@ -13,11 +13,7 @@ public class Autorun extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent arg1) {
         Intent intent = new Intent(context, Sync.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
+        context.startService(intent);
         Log.i("Autorun", "started");
     }
 }

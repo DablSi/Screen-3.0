@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.media_codec;
 import android.annotation.SuppressLint;
 import android.media.MediaCodec;
 import android.media.MediaExtractor;

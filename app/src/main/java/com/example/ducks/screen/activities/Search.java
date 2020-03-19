@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.activities;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -17,6 +17,11 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.ducks.screen.*;
+import com.example.ducks.screen.connection.Service;
+import com.example.ducks.screen.connection.Sync;
+import com.example.ducks.screen.media_codec.ExtractMpegFramesTest;
+import com.example.ducks.screen.ui.VideoSurfaceView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
@@ -240,8 +245,7 @@ public class Search extends AppCompatActivity {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                mediaPlayer.start();
-                                mediaPlayer.setVolume(0, 0);
+                                mediaPlayer.seekTo(0);
                             }
                         });
                         Call<Long> call = null;
@@ -274,8 +278,7 @@ public class Search extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         VideoSurfaceView.start = true;
-                                        mediaPlayer.seekTo(0);
-                                        mediaPlayer.setVolume(log1, log1);
+                                        mediaPlayer.start();
                                         new GetPause().start();
                                     }
                                 });
@@ -293,7 +296,7 @@ public class Search extends AppCompatActivity {
                         throwable.printStackTrace();
                     }
                 }
-            }, time - (System.currentTimeMillis() + (int) Sync.deltaT) - 50);
+            }, time - (System.currentTimeMillis() + (int) Sync.deltaT) - 40);
         }
     }
 

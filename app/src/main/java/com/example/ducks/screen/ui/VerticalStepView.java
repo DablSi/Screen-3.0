@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.ui;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import com.example.ducks.screen.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.media_codec;
 /*
  * Copyright 2013 The Android Open Source Project
  *
@@ -24,6 +24,7 @@ import android.opengl.*;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Surface;
+import com.example.ducks.screen.ui.VideoSurfaceView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -57,7 +58,7 @@ public class ExtractMpegFramesTest {
     private static final boolean VERBOSE = false;           // lots of logging
 
     // where to find files (note: requires WRITE_EXTERNAL_STORAGE permission)
-    public static String FILES_DIR, AUDIO_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/audio.mp4";
+    public static String FILES_DIR, AUDIO_DIR = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/audio.waw";
     private static CodecOutputSurface outputSurface = null;
 
     public static List<Bitmap> list;

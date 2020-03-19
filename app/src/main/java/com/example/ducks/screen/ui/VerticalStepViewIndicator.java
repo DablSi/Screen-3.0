@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.ui;
 
 
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import com.example.ducks.screen.R;
 
 import java.util.ArrayList;
 import java.util.List;

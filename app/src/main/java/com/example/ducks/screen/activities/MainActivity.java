@@ -1,9 +1,12 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.activities;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -12,6 +15,9 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import com.example.ducks.screen.connection.Autorun;
+import com.example.ducks.screen.R;
+import com.example.ducks.screen.connection.Sync;
 
 public class MainActivity extends AppCompatActivity {
     Button main, wall;
@@ -34,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 main.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.checked));
-                main.setPadding(px, 0, 0,0);
+                main.setPadding(px, 0, 0, 0);
                 startActivity(new Intent(MainActivity.this, Main.class));
             }
         });
@@ -43,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 wall.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.checked));
-                wall.setPadding( px, 0, 0,0);
+                wall.setPadding(px, 0, 0, 0);
                 startActivity(new Intent(MainActivity.this, Search.class));
             }
         });
@@ -53,12 +59,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         main.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rectangle));
-        main.setPadding(0,0,0,0);
+        main.setPadding(0, 0, 0, 0);
         wall.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rectangle));
-        wall.setPadding(0,0,0,0);
+        wall.setPadding(0, 0, 0, 0);
     }
 
-    public static int convertDpToPixel(int dp, Context context){
+    public static int convertDpToPixel(int dp, Context context) {
         return dp * (context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
@@ -70,7 +76,11 @@ public class MainActivity extends AppCompatActivity {
         protected Void doInBackground(Void... voids) {
             if (!Sync.isStarted)
                 startService(new Intent(MainActivity.this, Sync.class));
-            startService(new Intent(MainActivity.this, Autorun.class));
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+            filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+            filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+            registerReceiver(new Autorun(), filter);
             return null;
         }
     }

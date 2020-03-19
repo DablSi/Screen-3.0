@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import com.example.ducks.screen.media_codec.ExtractMpegFramesTest;
+import com.example.ducks.screen.R;
+import com.example.ducks.screen.connection.Service;
+import com.example.ducks.screen.ui.VerticalStepView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -25,15 +29,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.File;
 import java.util.LinkedList;
 
-import static com.example.ducks.screen.Search.URL;
-import static com.example.ducks.screen.Search.getUnsafeOkHttpClient;
+import static com.example.ducks.screen.activities.Search.URL;
+import static com.example.ducks.screen.activities.Search.getUnsafeOkHttpClient;
 
 public class Main extends AppCompatActivity {
     public static final int REQUEST_TAKE_GALLERY_VIDEO = 0, REQUEST_START_CAMERA_ACTIVITY = 1;
     public static byte[] video;
     public static int room = -1;
     private static boolean isUploaded = false;
-    protected static String android_id;
+    public static String android_id;
     private VerticalStepView verticalStepView;
     private static int position = 0;
     private static LinkedList<String> source;

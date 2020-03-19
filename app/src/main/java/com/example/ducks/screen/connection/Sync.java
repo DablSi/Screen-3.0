@@ -1,4 +1,4 @@
-package com.example.ducks.screen;
+package com.example.ducks.screen.connection;
 
 import android.app.Service;
 import android.content.Intent;
@@ -57,7 +57,7 @@ public class Sync extends Service {
                 edit.commit();
                 first = false;
             }
-        }, first ? 30000 : 3000, 3000);
+        }, first ? 35000 : 3000, 3000);
     }
 
 

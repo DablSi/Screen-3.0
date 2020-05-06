@@ -4,8 +4,9 @@
 
 ![Video-demonstration](https://drive.google.com/open?id=14xaSeELOmmJhNsAxpC9r9cmLHw_0H8u)
 
+# ISEF 2020 finalist
 
-# Granpri in the contest "Samsung IT school choses the strongest"
+# Gran prix in the contest "Samsung IT school choses the strongest"
 ![Contest's site](https://myitschool.ru/contests/index.php/konkurs-2019/pobediteli-konkursa-2019)
 
 ![Certificate](https://drive.google.com/file/d/1so8vej7UeT7EDrW9QiYc5maEi2GnRYVq/view?usp=drivesdk)

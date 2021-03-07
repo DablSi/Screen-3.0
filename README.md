@@ -8,6 +8,8 @@
 
 # ISEF 2020 finalist
 
+[Certificate](https://drive.google.com/file/d/1raOrVZuWUe0D_EkV0aB6Ivu3IJi1wQBm/view?usp=sharing)
+
 # Gran prix in the contest "Samsung IT school choses the strongest"
 [Contest's site](https://myitschool.ru/contests/index.php/konkurs-2019/pobediteli-konkursa-2019)
 
